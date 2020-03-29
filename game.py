@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from poker_deck import Deck, display_cards
 
 class Game:
@@ -24,17 +25,22 @@ class Game:
         
         # Flop
         common_cards = [deck.draw(), deck.draw(), deck.draw()]
-        display_cards(common_cards)
+        fig = display_cards(common_cards)
         if input('Flop betting starts from small blind.\nGame ends? Y/N ') == 'Y':
             return
         
         # Turn
         common_cards.append(deck.draw())
-        display_cards(common_cards)
+        plt.close(fig)
+        fig = display_cards(common_cards)
         if input('Turn betting starts from small blind.\nGame ends? Y/N ') == 'Y':
             return
         
         # River
         common_cards.append(deck.draw())
-        display_cards(common_cards)
+        plt.close(fig)
+        fig = display_cards(common_cards)
         print('River betting starts from small blind.')
+        
+        # End
+        

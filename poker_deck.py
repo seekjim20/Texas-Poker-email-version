@@ -35,12 +35,14 @@ def display_cards(cards: List[Card]):
             card.show_image(fig, ax[i])
     fig.canvas.draw()
     fig.canvas.flush_events()
+    return fig
     
 class Deck:    
     def __init__(self):
         RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
         SUITS = ['S', 'H', 'C', 'D']
         self.deck = [Card(r, s) for r in RANKS for s in SUITS]
+        random.seed()
         random.shuffle(self.deck)
         
     def draw(self):
