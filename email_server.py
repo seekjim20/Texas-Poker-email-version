@@ -6,18 +6,24 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 class Server:
-    def __init__(self, server_addr, port_num, email_addr):
-        self._smtp = smtplib.SMTP(server_addr, port_num)
+    def __init__(self, host, port, user):
+        self._host = host
+        self._port = port
+        self._user = user
+        self._password = getpass.getpass('Password : ')
+        self.connect()
+
+    def connect(self):
+        self._smtp = smtplib.SMTP(self._host, self._port)
+        self._smtp.ehlo()
         self._smtp.starttls()
         self._smtp.ehlo()
-        self._email_addr = email_addr
-        self._password = getpass.getpass('Password : ')
-        self._smtp.login(self._email_addr, self._password)
+        self._smtp.login(self._user, self._password)
         
     def send_message(self, addr_to, subject, cards):
         msg = MIMEMultipart()
         msg['Subject'] = subject
-        msg['From'] = self._email_addr
+        msg['From'] = self._user
         msg['To'] = addr_to
         msg.preamble = 'Your cards'
 
@@ -35,8 +41,13 @@ class Server:
                 msgImage.add_header('Content-ID', '<image{:d}>'.format(i))
                 msg.attach(msgImage)
 
-        self._smtp.sendmail(self._email_addr, addr_to, msg.as_string())
-        
+        for trial in range(3):
+            try:
+                self._smtp.sendmail(self._user, addr_to, msg.as_string())
+                break
+            except SMTPRecipientsRefused:
+                self.connect()
+            
     def __del__(self):
         self._smtp.quit()
     

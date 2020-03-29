@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from datetime import datetime
 from poker_deck import Deck, display_cards
 
 class Game:
@@ -15,7 +16,8 @@ class Game:
         for player in self.players:
             card1 = deck.draw()
             card2 = deck.draw()
-            subject = 'Texas Poker Game # {:d}'.format(self.num_games)
+            from datetime import datetime
+            subject = 'Texas Poker Game # {:d} @ {:s}'.format(self.num_games, datetime.now().strftime('%H:%M:%S'))
             self.server.send_message(player, subject, [card1, card2])
         # Game starts
         common_cards = []
