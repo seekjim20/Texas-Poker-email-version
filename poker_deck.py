@@ -3,6 +3,8 @@ from typing import List
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
+FIGSIZE = (3, 4.5)
+
 class Card:
     def __init__(self, rank, suit):
         """
@@ -21,20 +23,22 @@ class Card:
     
     def show_image(self, fig=None, ax=None):
         if fig is None:
-            fig, ax = plt.subplots(figsize=(4, 6))
+            fig, ax = plt.subplots(figsize=FIGSIZE)
         ax.imshow(mpimg.imread(self.image_link))
         ax.set_axis_off()
 
 def display_cards(cards: List[Card]):
     if len(cards) == 1:
-        fig, ax = plt.subplots(figsize=(4, 6))
+        fig, ax = plt.subplots(figsize=FIGSIZE)
         cards[0].show_image(fig, ax)
     else:
-        fig, ax = plt.subplots(ncols=len(cards), figsize=(len(cards)*4, 6))
+        fig, ax = plt.subplots(ncols=len(cards), figsize=(len(cards)*FIGSIZE[0], FIGSIZE[1]))
         for i, card in enumerate(cards):
             card.show_image(fig, ax[i])
-    fig.canvas.draw()
-    fig.canvas.flush_events()
+    # fig.tight_layout()
+    # fig.canvas.draw()
+    # fig.canvas.flush_events()
+    plt.pause(0.1)
     return fig
     
 class Deck:    
@@ -50,5 +54,3 @@ class Deck:
 
     def show(self):
         print(self.deck)
-        
-        

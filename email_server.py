@@ -21,9 +21,13 @@ class Server:
         msg['To'] = addr_to
         msg.preamble = 'Your cards'
 
-        msgText = MIMEText('<br>' + ('<img src="cid:image{:d}" width="45%">'*2).format(0, 1)
-                           + '<br>', 'html')
-        msg.attach(msgText)
+        msg.attach(MIMEText(
+            '<br>' + 
+            '<font size="+3">{}</font>'.format(subject) +
+            '<br>' +
+            ('<img src="cid:image{:d}" width="45%">'*2).format(0, 1) +
+            '<br>'
+        , 'html'))
         
         for i, card in enumerate(cards):
             with open(card.image_link, 'rb') as fp:

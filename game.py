@@ -15,7 +15,7 @@ class Game:
         for player in self.players:
             card1 = deck.draw()
             card2 = deck.draw()
-            subject = 'Texas Poker game # {:d}'.format(self.num_games)
+            subject = 'Texas Poker Game # {:d}'.format(self.num_games)
             self.server.send_message(player, subject, [card1, card2])
         # Game starts
         common_cards = []
